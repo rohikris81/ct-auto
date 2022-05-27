@@ -2,6 +2,17 @@
     "furnogamy": {
         "browsertitle": "Furnogamy",
         "aboutpageurl": "https://www.furnogamy.com/aboutus#about_us_dt71u"
+    },
+    "listingycreche": {
+        "name_valid": "Auto User",
+        "name_invalid": "",
+        "email_valid": "autouser@yopmail.com",
+        "email_invalid": "",
+        "mobileno_valid": "9374876683",
+        "mobileno_invalid": "",
+        "subject_valid": "Automation Mail",
+        "subject_invalid": "",
+        "message_valid": "This is automation generated message. Please ignore.",
+        "message_invalid": ""
     }
-   
 }
