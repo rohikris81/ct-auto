@@ -91,6 +91,34 @@ exports.config = {
     // bail (default is 0 - don't bail, run all tests).
     bail: 0,
     //
+
+    afterStep: function (step, scenario, { error, duration, passed }, context) {
+        if (error) {
+          browser.takeScreenshot();
+        }
+      },
+
+    onPrepare : function() {
+       // browser.driver.manage().window().setSize(1366,1000);       
+        var reporter = new AllureReporter({
+            allureReport : {
+                resultsDir : 'allure-results'
+            }
+        });
+        jasmine.getEnv().addReporter(reporter);
+        var AllureReporter = require('jasmine-allure-reporter');
+        jasmine.getEnv().topSuite().afterEach({fn: function() {
+            browser.takeScreenshot().then(function(png) {
+                allure.createAttachment('Screenshot', function() {
+                    return new Buffer(png, 'base64')
+                }, 'image/png')();
+            })
+        }});
+    },
+
+    onComplete: function() {
+    },
+
     // Set a base URL in order to shorten url command calls. If your `url` parameter starts
     // with `/`, the base url gets prepended, not including the path portion of your baseUrl.
     // If your `url` parameter starts without a scheme or `/` (like `some/path`), the base url
@@ -297,50 +325,5 @@ exports.config = {
     */
     // onReload: function(oldSessionId, newSessionId) {
     // }
-
-    afterStep: function (step, scenario, { error, duration, passed }, context) {
-        if (error) {
-          browser.takeScreenshot();
-        }
-      },
-
-    onPrepare : function() {
-        browser.driver.manage().window().setSize(1366,1000);
-        var AllureReporter = require('jasmine-allure-reporter');
-        var reporter = new AllureReporter({
-            allureReport : {
-                resultsDir : 'allure-results'
-            }
-        });
-        jasmine.getEnv().addReporter(reporter);
-    
-        jasmine.getEnv().topSuite().afterEach({fn: function() {
-            browser.takeScreenshot().then(function(png) {
-                allure.createAttachment('Screenshot', function() {
-                    return new Buffer(png, 'base64')
-                }, 'image/png')();
-            })
-        }});
-    },
-
-    onComplete: function() {
-        const reportError = new Error('Could not generate Allure report')
-        const generation = allure(['generate', 'allure-results', '--clean'])
-        return new Promise((resolve, reject) => {
-            const generationTimeout = setTimeout(
-                () => reject(reportError),
-                5000)
-
-            generation.on('exit', function(exitCode) {
-                clearTimeout(generationTimeout)
-
-                if (exitCode !== 0) {
-                    return reject(reportError)
-                }
-
-                console.log('Allure report successfully generated')
-                resolve()
-            })
-        })
-    }
+ 
 }
