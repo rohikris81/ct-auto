@@ -20,6 +20,7 @@ exports.config = {
     // then the current working directory is where your `package.json` resides, so `wdio`
     // will be called from there.
     //
+
     specs: [
         './test/specs/**/*.js'
     ],
@@ -50,7 +51,7 @@ exports.config = {
     // https://saucelabs.com/platform/platform-configurator
     //
     capabilities: [{
-    
+
         // maxInstances can get overwritten per capability. So if you have an in-house Selenium
         // grid with only 5 firefox instances available you can make sure that not more than
         // 5 instances get started at a time.
@@ -90,6 +91,34 @@ exports.config = {
     // bail (default is 0 - don't bail, run all tests).
     bail: 0,
     //
+
+    afterStep: function (step, scenario, { error, duration, passed }, context) {
+        if (error) {
+          browser.takeScreenshot();
+        }
+      },
+
+    onPrepare : function() {
+       // browser.driver.manage().window().setSize(1366,1000);       
+        var reporter = new AllureReporter({
+            allureReport : {
+                resultsDir : 'allure-results'
+            }
+        });
+        jasmine.getEnv().addReporter(reporter);
+        var AllureReporter = require('jasmine-allure-reporter');
+        jasmine.getEnv().topSuite().afterEach({fn: function() {
+            browser.takeScreenshot().then(function(png) {
+                allure.createAttachment('Screenshot', function() {
+                    return new Buffer(png, 'base64')
+                }, 'image/png')();
+            })
+        }});
+    },
+
+    onComplete: function() {
+    },
+
     // Set a base URL in order to shorten url command calls. If your `url` parameter starts
     // with `/`, the base url gets prepended, not including the path portion of your baseUrl.
     // If your `url` parameter starts without a scheme or `/` (like `some/path`), the base url
@@ -111,7 +140,7 @@ exports.config = {
     // your test setup with almost no effort. Unlike plugins, they don't add new
     // commands. Instead, they hook themselves up into the test process.
     services: ['chromedriver'],
-    
+
     // Framework you want to run your specs with.
     // The following are supported: Mocha, Jasmine, and Cucumber
     // see also: https://webdriver.io/docs/frameworks
@@ -132,10 +161,16 @@ exports.config = {
     // Test reporter for stdout.
     // The only one supported by default is 'dot'
     // see also: https://webdriver.io/docs/dot-reporter
-    reporters: ['spec'],
+    // ...
+    reporters: [['allure', {
+        outputDir: 'allure-results',
+        disableWebdriverStepsReporting: true,
+        disableWebdriverScreenshotsReporting: true,
+    }]],
+    // ...
 
 
-    
+
     //
     // Options to be passed to Mocha.
     // See the full list at http://mochajs.org/
@@ -290,4 +325,5 @@ exports.config = {
     */
     // onReload: function(oldSessionId, newSessionId) {
     // }
+ 
 }
