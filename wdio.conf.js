@@ -20,7 +20,6 @@ exports.config = {
     // then the current working directory is where your `package.json` resides, so `wdio`
     // will be called from there.
     //
-
     specs: [
         './test/specs/**/*.js'
     ],
@@ -91,34 +90,6 @@ exports.config = {
     // bail (default is 0 - don't bail, run all tests).
     bail: 0,
     //
-
-    afterStep: function (step, scenario, { error, duration, passed }, context) {
-        if (error) {
-          browser.takeScreenshot();
-        }
-      },
-
-    onPrepare : function() {
-       // browser.driver.manage().window().setSize(1366,1000);       
-        var reporter = new AllureReporter({
-            allureReport : {
-                resultsDir : 'allure-results'
-            }
-        });
-        jasmine.getEnv().addReporter(reporter);
-        var AllureReporter = require('jasmine-allure-reporter');
-        jasmine.getEnv().topSuite().afterEach({fn: function() {
-            browser.takeScreenshot().then(function(png) {
-                allure.createAttachment('Screenshot', function() {
-                    return new Buffer(png, 'base64')
-                }, 'image/png')();
-            })
-        }});
-    },
-
-    onComplete: function() {
-    },
-
     // Set a base URL in order to shorten url command calls. If your `url` parameter starts
     // with `/`, the base url gets prepended, not including the path portion of your baseUrl.
     // If your `url` parameter starts without a scheme or `/` (like `some/path`), the base url
@@ -161,14 +132,23 @@ exports.config = {
     // Test reporter for stdout.
     // The only one supported by default is 'dot'
     // see also: https://webdriver.io/docs/dot-reporter
-    // ...
-    reporters: [['allure', {
-        outputDir: 'allure-results',
-        disableWebdriverStepsReporting: true,
-        disableWebdriverScreenshotsReporting: true,
-    }]],
-    // ...
+    reporters: ['allure'],
+    reporterOptions: {
+        allure: {
+            outputDir: 'allure-result',
+            disableWebdriverStepsReporting: true,
+            disableWebdriverScreenshotsReporting: false
+           
+        }
+    },
 
+    afterTest: function (test, context, { error, result, duration , passed, retries}) {
+        if (error) {
+          browser.takeScreenshot();
+        }
+      },
+
+        // ...
 
 
     //
@@ -325,5 +305,4 @@ exports.config = {
     */
     // onReload: function(oldSessionId, newSessionId) {
     // }
- 
 }
