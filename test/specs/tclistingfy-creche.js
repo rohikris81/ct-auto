@@ -21,7 +21,7 @@ describe('Verification of Landing Page - Listingfy Creche', () => {
 
     it('To verify Query Submission', async () => {
         await Listingfy.openListingfyCreche();
-        await Listingfy.submitQuery(data.listingycreche.name_valid, data.listingycreche.email_valid, data.listingycreche.mobileno_valid, data.listingycreche.subject_valid, data.listingycreche.subject_valid);
+        await Listingfy.submitQuery(data.listingycreche.name_valid, data.listingycreche.email_valid, data.listingycreche.mobileno_valid, data.listingycreche.subject_valid, data.listingycreche.message_valid);
         await browser.pause(2000);
         //await expect($('#contact-form-box').getText()).toEqual("Query submitted successfully");
         await expect(Listingfy.buttonPresent()).not.toBeDisplayed();

@@ -14,5 +14,32 @@
         "subject_invalid": "",
         "message_valid": "This is automation generated message. Please ignore.",
         "message_invalid": ""
+    },
+
+    "listingfydoctor": {
+        "name_valid": "John",
+        "name_invalid": "",
+        "email_valid": "john123@gmail.com",
+        "email_invalid": "",
+        "mobileno_valid": "9306652254",
+        "mobileno_invalid": "",
+        "subject_valid": "Mail",
+        "subject_invalid": "",
+        "message_valid": "Appointment for Checkup.",
+        "message_invalid": ""
+    },
+
+    "listingfyCarShowroom": {
+        "name_valid": "Admin",
+        "name_invalid": "",
+        "email_valid": "admin23@gmail.com",
+        "email_invalid": "",
+        "mobileno_valid": "9366567448",
+        "mobileno_invalid": "",
+        "subject_vaid": "Enquiry for Cars",
+        "subject_invalid": "",
+        "message_valid": "A showroom is a shop in which goods are displayed for sale.",
+        "message_invalid": ""
     }
+
 }
