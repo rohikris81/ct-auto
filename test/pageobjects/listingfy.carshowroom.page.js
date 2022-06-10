@@ -1,4 +1,4 @@
-const Page = require('./Page')
+const Page = require('./page')
 
 class CarShowroom extends Page {
 
@@ -28,10 +28,17 @@ class CarShowroom extends Page {
         return $('[name ="message"]');
     }
     get btnSubmit() {
-        return $('[type="submit"]');
+        return $('button[type="submit"]');
     }
-    buttonPresent() {
-        return $('[type ="submit"]');
+
+    buttonPresent()
+    {
+        return $('button[type="submit"]');
+    }
+
+    applyJobButton()
+    {
+        return $('.#jobs_tvwxt > div > div:nth-child(2) > div:nth-child(1) > a > div > div > div.d-flex.justify-content-between > div.apply-btn > button');
     }
     async submitQuery(username, email, mobileno, subject, message) {
         await this.inputname.setValue(username);
@@ -40,6 +47,10 @@ class CarShowroom extends Page {
         await this.inputsubject.setValue(subject);
         await this.inputmessage.setValue(message);
         await this.btnSubmit.click();
+    }
+
+    async verifyApplyJob() {
+        await this.applyJobButton().click();
     }
 }
 module.exports = new CarShowroom();
