@@ -38,7 +38,7 @@ class CarShowroom extends Page {
 
     applyJobButton()
     {
-        return $('.#jobs_tvwxt > div > div:nth-child(2) > div:nth-child(1) > a > div > div > div.d-flex.justify-content-between > div.apply-btn > button');
+        return $('//*[@id="jobs_tvwxt"]/div/div[2]/div[1]/a/div/div/div[1]/div[2]/button');
     }
     async submitQuery(username, email, mobileno, subject, message) {
         await this.inputname.setValue(username);
